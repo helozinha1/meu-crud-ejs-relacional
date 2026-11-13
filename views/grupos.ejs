@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestão de Grupos — SSR Relacional</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f8f9fa; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 20px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .card-add { background: white; padding: 20px; margin: 20px 0; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .form-inline { display: flex; gap: 10px; }
+        .form-inline input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        .form-inline button { padding: 8px 15px; background: #6f42c1; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #6f42c1; color: white; }
+        .btn-red { background-color: #dc3545; color: white; padding: 6px 10px; text-decoration: none; border-radius: 4px; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Cadastro de Grupos de Produtos</h2>
+            <a href="/produtos" style="color: #007bff; text-decoration: none;">← Voltar para Produtos</a>
+        </div>
+
+        <!-- FORMULÁRIO RÁPIDO PARA ADICIONAR NOVO GRUPO -->
+        <div class="card-add">
+            <h3>Novo Grupo</h3>
+            <form action="/grupos/novo" method="POST" class="form-inline">
+                <input type="text" name="descricao_grupo" placeholder="Ex: Games, Modems, Cabos..." required>
+                <button type="submit">Cadastrar Grupo</button>
+            </form>
+        </div>
+
+        <!-- LISTAGEM DE GRUPOS EXISTENTES -->
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Descrição do Grupo</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (grupos.length === 0) { %>
+                    <tr>
+                        <td colspan="3" style="text-align: center; color: #888;">Nenhum grupo cadastrado.</td>
+                    </tr>
+                <% } else { %>
+                    <% grupos.forEach(grupo => { %>
+                        <tr>
+                            <td><%= grupo.id %></td>
+                            <td><strong><%= grupo.descricao_grupo %></strong></td>
+                            <td>
+                                <a href="/grupos/deletar/<%= grupo.id %>" class="btn-red" onclick="return confirm('Atenção: Ao excluir o grupo, os produtos vinculados terão o grupo definido como nulo. Deseja continuar?')">Excluir</a>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
